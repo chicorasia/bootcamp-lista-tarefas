@@ -13,10 +13,10 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val adapter = TarefaAdapter()
-
     private val rvList: RecyclerView by lazy {
-        findViewById<RecyclerView>(R.id.main_recyclerview)
+        binding.mainRecyclerview
     }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
