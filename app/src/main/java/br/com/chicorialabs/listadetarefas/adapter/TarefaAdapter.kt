@@ -2,22 +2,25 @@ package br.com.chicorialabs.listadetarefas.adapter
 
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.com.chicorialabs.listadetarefas.databinding.TarefaItemBinding
 import br.com.chicorialabs.listadetarefas.model.Tarefa
+import br.com.chicorialabs.listadetarefas.ui.activity.CLickItemTarefaListener
 
-class TarefaAdapter : RecyclerView.Adapter<TarefaAdapter.TarefaAdapterViewHolder>() {
+class TarefaAdapter(val listener: CLickItemTarefaListener) :
+    RecyclerView.Adapter<TarefaAdapter.TarefaAdapterViewHolder>() {
 
     private lateinit var binding: TarefaItemBinding
     val lista: MutableList<Tarefa> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TarefaAdapterViewHolder {
-        binding = TarefaItemBinding.inflate(LayoutInflater.from(parent.context),
-            parent, false)
+        binding = TarefaItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent, false
+        )
 //        val view = binding.root
-        return TarefaAdapterViewHolder(binding)
+        return TarefaAdapterViewHolder(binding, listener=listener, lista=lista)
     }
 
     override fun onBindViewHolder(holder: TarefaAdapterViewHolder, position: Int) {
@@ -33,15 +36,28 @@ class TarefaAdapter : RecyclerView.Adapter<TarefaAdapter.TarefaAdapterViewHolder
     }
 
 
-    class TarefaAdapterViewHolder(private val binding: TarefaItemBinding) : RecyclerView.ViewHolder(binding.root){
+    class TarefaAdapterViewHolder(
+        private val binding: TarefaItemBinding,
+        listener: CLickItemTarefaListener,
+        lista: List<Tarefa>
+    ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(tarefa: Tarefa){
+        fun bind(tarefa: Tarefa) {
             binding.itemNomeTxt.text = tarefa.nome
             binding.itemDataTxt.text = tarefa.data.toString()
             binding.itemConcluidoCbx.isChecked = tarefa.concluida
-            binding.itemImagemIv.setImageDrawable(Drawable
-                .createFromPath(tarefa.imagem))
+            binding.itemImagemIv.setImageDrawable(
+                Drawable
+                    .createFromPath(tarefa.imagem)
+            )
         }
+
+        init {
+            binding.root.setOnClickListener {
+                listener.clickItemTarefa(lista[adapterPosition])
+            }
+        }
+
 
     }
 }

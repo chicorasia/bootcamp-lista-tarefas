@@ -1,5 +1,6 @@
 package br.com.chicorialabs.listadetarefas.ui.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -14,12 +15,13 @@ import br.com.chicorialabs.listadetarefas.R
 import br.com.chicorialabs.listadetarefas.adapter.TarefaAdapter
 import br.com.chicorialabs.listadetarefas.databinding.DrawerMenuBinding
 import br.com.chicorialabs.listadetarefas.model.Tarefa
+import br.com.chicorialabs.listadetarefas.ui.activity.DetalheTarefaActivity.Companion.EXTRA_TAREFA
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CLickItemTarefaListener {
 
 
     private lateinit var binding: DrawerMenuBinding
-    private val adapter = TarefaAdapter()
+    private val adapter = TarefaAdapter(this)
     private val rvList: RecyclerView by lazy {
         binding.drawerInclude.mainRecyclerview
     }
@@ -31,22 +33,25 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        val drawerLayout = binding.root
-//        val toolbar = findViewById<Toolbar>(R.id.main_toolbar)
-//        setSupportActionBar(toolbar)
-        setSupportActionBar(binding.drawerInclude.mainToolbar)
-
-
-        val actionBarToggle = ActionBarDrawerToggle(this, drawerLayout,
-                R.string.open_drawer, R.string.close_drawer)
-        drawerLayout.addDrawerListener(actionBarToggle)
-        actionBarToggle.syncState()
-
-
-
+        inicializaToolbar()
         inicializaRecyclerView()
         updateList()
 
+    }
+
+    private fun inicializaToolbar() {
+        val drawerLayout = binding.root
+        //        val toolbar = findViewById<Toolbar>(R.id.main_toolbar)
+        //        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.drawerInclude.mainToolbar)
+
+
+        val actionBarToggle = ActionBarDrawerToggle(
+            this, drawerLayout,
+            R.string.open_drawer, R.string.close_drawer
+        )
+        drawerLayout.addDrawerListener(actionBarToggle)
+        actionBarToggle.syncState()
     }
 
     private fun inicializaRecyclerView() {
@@ -85,5 +90,15 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    override fun clickItemTarefa(tarefa: Tarefa) {
+        val intent = Intent(this, DetalheTarefaActivity::class.java)
+        intent.putExtra(EXTRA_TAREFA, tarefa)
+        startActivity(intent)
+
+        showToast(tarefa.nome)
+
+    }
+
 
 }
