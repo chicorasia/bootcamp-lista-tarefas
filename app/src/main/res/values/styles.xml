@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <style name="rotulo_tarefa">
         <item name="android:layout_marginStart">8dp</item>
         <item name="android:textSize">20sp</item>
@@ -10,5 +9,9 @@
     <style name="formato_data">
         <item name="android:layout_marginStart">8dp</item>
         <item name="android:layout_marginTop">4dp</item>
+    </style>
+
+    <style name="texto_menu_overflow" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="actionMenuTextColor">#303030</item>
     </style>
 </resources>

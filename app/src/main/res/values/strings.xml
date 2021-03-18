@@ -2,4 +2,6 @@
     <string name="app_name">Lista de Tarefas</string>
     <string name="menu_item_1">menu_item_1</string>
     <string name="menu_item_2">menu_item2</string>
+    <string name="open_drawer">open</string>
+    <string name="close_drawer">close</string>
 </resources>

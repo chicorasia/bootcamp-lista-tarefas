@@ -2,32 +2,47 @@ package br.com.chicorialabs.listadetarefas.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.chicorialabs.listadetarefas.R
 import br.com.chicorialabs.listadetarefas.adapter.TarefaAdapter
-import br.com.chicorialabs.listadetarefas.databinding.ActivityMainBinding
+import br.com.chicorialabs.listadetarefas.databinding.DrawerMenuBinding
 import br.com.chicorialabs.listadetarefas.model.Tarefa
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+
+    private lateinit var binding: DrawerMenuBinding
     private val adapter = TarefaAdapter()
     private val rvList: RecyclerView by lazy {
-        binding.mainRecyclerview
+        binding.drawerInclude.mainRecyclerview
     }
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = DrawerMenuBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        val drawerLayout = binding.root
+//        val toolbar = findViewById<Toolbar>(R.id.main_toolbar)
+//        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.drawerInclude.mainToolbar)
+
+
+        val actionBarToggle = ActionBarDrawerToggle(this, drawerLayout,
+                R.string.open_drawer, R.string.close_drawer)
+        drawerLayout.addDrawerListener(actionBarToggle)
+        actionBarToggle.syncState()
+
+
 
         inicializaRecyclerView()
         updateList()
@@ -49,6 +64,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.menu, menu)
+        Log.i("listatarefas", "onCreateOptionsMenu: Inflando o menu")
         return true
     }
 
