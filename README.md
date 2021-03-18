@@ -1,6 +1,7 @@
 # Lista de Tarefas by chicorasia :shopping_cart::car::school:
 
 Projeto desenvolvido no módulo **Conceitos de Navegação, Aparência e Estilo de Aplicativos Android**, instrutor Igor Ferrani.
+- Uso de viewbindings e plugin parcelable em lugar de kotlin-extensions
 
 *****
 
