@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.CheckBox
 import android.widget.TextView
+import android.widget.Toolbar
 import br.com.chicorialabs.listadetarefas.R
 import br.com.chicorialabs.listadetarefas.model.Tarefa
 
@@ -19,9 +20,16 @@ class DetalheTarefaActivity : AppCompatActivity() {
         //setHomeAsUpEnabled
         //.. e o método para encerrar a atividade após clicar no retorno
 
+        initToolbar()
         getExtra()
         inicializaCampos(tarefaRecebida)
 
+    }
+
+    private fun initToolbar() {
+        val toolbar = findViewById<View>(R.id.detalhe_toolbar) as androidx.appcompat.widget.Toolbar
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun inicializaCampos(tarefaRecebida: Tarefa?) {
@@ -41,8 +49,15 @@ class DetalheTarefaActivity : AppCompatActivity() {
 
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
+
     companion object {
 
         const val EXTRA_TAREFA: String = "EXTRA_TAREFA"
     }
+
+
 }

@@ -1,6 +1,8 @@
 package br.com.chicorialabs.listadetarefas.ui.activity
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +11,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.content.edit
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.chicorialabs.listadetarefas.R
@@ -16,6 +19,8 @@ import br.com.chicorialabs.listadetarefas.adapter.TarefaAdapter
 import br.com.chicorialabs.listadetarefas.databinding.DrawerMenuBinding
 import br.com.chicorialabs.listadetarefas.model.Tarefa
 import br.com.chicorialabs.listadetarefas.ui.activity.DetalheTarefaActivity.Companion.EXTRA_TAREFA
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class MainActivity : AppCompatActivity(), CLickItemTarefaListener {
 
@@ -34,8 +39,9 @@ class MainActivity : AppCompatActivity(), CLickItemTarefaListener {
         setContentView(view)
 
         inicializaToolbar()
+        fetchListaTarefas()
         inicializaRecyclerView()
-        updateList()
+
 
     }
 
@@ -44,7 +50,7 @@ class MainActivity : AppCompatActivity(), CLickItemTarefaListener {
         //        val toolbar = findViewById<Toolbar>(R.id.main_toolbar)
         //        setSupportActionBar(toolbar)
         setSupportActionBar(binding.drawerInclude.mainToolbar)
-
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val actionBarToggle = ActionBarDrawerToggle(
             this, drawerLayout,
@@ -57,14 +63,37 @@ class MainActivity : AppCompatActivity(), CLickItemTarefaListener {
     private fun inicializaRecyclerView() {
         rvList.adapter = adapter
         rvList.layoutManager = LinearLayoutManager(this)
+        updateList()
     }
 
     private fun updateList(){
-        adapter.updateList(arrayListOf(
-            Tarefa(nome="Compras", data="17/03/2021", imagem = ""),
-            Tarefa(nome="Lavar Carro", data="30/03/2021", imagem = "")
-        ))
+        adapter.updateList(getListTarefa())
     }
+
+
+    private fun fetchListaTarefas(){
+        val list = arrayListOf(
+            Tarefa(nome="Compras", data="17/03/2021", imagem = ""),
+            Tarefa(nome="Lavar Carro", data="30/03/2021", imagem = ""),
+            Tarefa(nome="Consulta Dentista", data="28/03/2021", imagem = ""),
+            Tarefa(nome = "Cortar grama", data = "18/03/2021", imagem = "", concluida = true)
+        )
+
+        getInstanceSharedPreferences().edit {
+            putString("tarefas", Gson().toJson(list))
+            commit()
+        }
+    }
+
+    private fun getListTarefa() : List<Tarefa> {
+        val list = getInstanceSharedPreferences().getString("tarefas", "[]")
+        val turnsType = object : TypeToken<List<Tarefa>>() {}.type
+        return Gson().fromJson(list, turnsType)
+    }
+
+    private fun getInstanceSharedPreferences(): SharedPreferences =
+        getSharedPreferences("br.com.chicorialabs.listadetarefas.PREFERENCES",
+            Context.MODE_PRIVATE)
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater: MenuInflater = menuInflater
@@ -95,9 +124,20 @@ class MainActivity : AppCompatActivity(), CLickItemTarefaListener {
         val intent = Intent(this, DetalheTarefaActivity::class.java)
         intent.putExtra(EXTRA_TAREFA, tarefa)
         startActivity(intent)
-
         showToast(tarefa.nome)
 
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        //TODO: resolver essa implementação
+        val actionBarToggle = ActionBarDrawerToggle(
+            this, binding.root,
+            R.string.open_drawer, R.string.close_drawer
+        )
+        binding.root.addDrawerListener(actionBarToggle)
+        actionBarToggle.syncState()
+        showToast("Clicou no hamburger!")
+        return true
     }
 
 
