@@ -1,6 +1,5 @@
 package br.com.chicorialabs.listadetarefas.adapter
 
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +18,6 @@ class TarefaAdapter(val listener: CLickItemTarefaListener) :
             LayoutInflater.from(parent.context),
             parent, false
         )
-//        val view = binding.root
         return TarefaAdapterViewHolder(binding, listener=listener, lista=lista)
     }
 
@@ -46,10 +44,6 @@ class TarefaAdapter(val listener: CLickItemTarefaListener) :
             binding.itemNomeTxt.text = tarefa.nome
             binding.itemDataTxt.text = tarefa.data.toString()
             binding.itemConcluidoCbx.isChecked = tarefa.concluida
-            binding.itemImagemIv.setImageDrawable(
-                Drawable
-                    .createFromPath(tarefa.imagem)
-            )
         }
 
         init {

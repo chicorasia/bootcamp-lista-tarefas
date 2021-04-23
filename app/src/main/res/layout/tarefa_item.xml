@@ -13,24 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="4dp">
-
-        <ImageView
-            android:id="@+id/item_imagem_iv"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars" />
-
         <TextView
             android:id="@+id/item_nome_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Nome da tarefa"
-            app:layout_constraintStart_toEndOf="@+id/item_imagem_iv"
-            app:layout_constraintTop_toTopOf="@+id/item_imagem_iv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             style="@style/rotulo_tarefa" />
 
         <TextView
@@ -39,7 +28,7 @@
             android:layout_height="wrap_content"
             android:text="TextView"
             tools:text="22/03/2021"
-            app:layout_constraintStart_toEndOf="@+id/item_imagem_iv"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/item_nome_txt"
             style="@style/formato_data" />
 

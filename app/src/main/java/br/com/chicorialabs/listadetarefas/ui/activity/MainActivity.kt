@@ -47,8 +47,6 @@ class MainActivity : AppCompatActivity(), CLickItemTarefaListener {
 
     private fun inicializaToolbar() {
         val drawerLayout = binding.root
-        //        val toolbar = findViewById<Toolbar>(R.id.main_toolbar)
-        //        setSupportActionBar(toolbar)
         setSupportActionBar(binding.drawerInclude.mainToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -66,17 +64,18 @@ class MainActivity : AppCompatActivity(), CLickItemTarefaListener {
         updateList()
     }
 
-    private fun updateList(){
+    private fun updateList() {
         adapter.updateList(getListTarefa())
     }
 
 
-    private fun fetchListaTarefas(){
+    private fun fetchListaTarefas() {
         val list = arrayListOf(
-            Tarefa(nome="Compras", data="17/03/2021", imagem = ""),
-            Tarefa(nome="Lavar Carro", data="30/03/2021", imagem = ""),
-            Tarefa(nome="Consulta Dentista", data="28/03/2021", imagem = ""),
-            Tarefa(nome = "Cortar grama", data = "18/03/2021", imagem = "", concluida = true)
+            Tarefa(nome = "Compras", data = "17/03/2021"),
+            Tarefa(nome = "Lavar Carro", data = "30/03/2021"),
+            Tarefa(nome = "Consulta Dentista", data = "28/03/2021"),
+            Tarefa(nome = "Cortar grama", data = "18/03/2021", concluida = true),
+            Tarefa (nome = "Estudar Kotlin", data = "24/03/2021")
         )
 
         getInstanceSharedPreferences().edit {
@@ -85,15 +84,17 @@ class MainActivity : AppCompatActivity(), CLickItemTarefaListener {
         }
     }
 
-    private fun getListTarefa() : List<Tarefa> {
+    private fun getListTarefa(): List<Tarefa> {
         val list = getInstanceSharedPreferences().getString("tarefas", "[]")
         val turnsType = object : TypeToken<List<Tarefa>>() {}.type
         return Gson().fromJson(list, turnsType)
     }
 
     private fun getInstanceSharedPreferences(): SharedPreferences =
-        getSharedPreferences("br.com.chicorialabs.listadetarefas.PREFERENCES",
-            Context.MODE_PRIVATE)
+        getSharedPreferences(
+            "br.com.chicorialabs.listadetarefas.PREFERENCES",
+            Context.MODE_PRIVATE
+        )
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater: MenuInflater = menuInflater
@@ -106,8 +107,9 @@ class MainActivity : AppCompatActivity(), CLickItemTarefaListener {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId){
+        return when (item.itemId) {
             R.id.menu_item_1 -> {
                 showToast("Clicou no item 1")
                 true
@@ -129,8 +131,7 @@ class MainActivity : AppCompatActivity(), CLickItemTarefaListener {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        //TODO: resolver essa implementação
-        val actionBarToggle = ActionBarDrawerToggle(
+                val actionBarToggle = ActionBarDrawerToggle(
             this, binding.root,
             R.string.open_drawer, R.string.close_drawer
         )
