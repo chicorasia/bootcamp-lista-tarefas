@@ -22,15 +22,19 @@ import br.com.chicorialabs.listadetarefas.ui.activity.DetalheTarefaActivity.Comp
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-class MainActivity : AppCompatActivity(), CLickItemTarefaListener {
+// TODO 005: A MainActivity implementa a interface ClickItemTarefaListener
+class MainActivity : AppCompatActivity() {
 
 
     private lateinit var binding: DrawerMenuBinding
-    private val adapter = TarefaAdapter(this)
+
+//    TODO 006: passar a MainActivity como parâmetro do construtor do adapter
+    private val adapter = TarefaAdapter()
     private val rvList: RecyclerView by lazy {
         binding.drawerInclude.mainRecyclerview
     }
 
+//    TODO 007: sobrescrever os métodos da interface ClickItemTarefaListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -127,13 +131,7 @@ class MainActivity : AppCompatActivity(), CLickItemTarefaListener {
         }
     }
 
-    override fun clickItemTarefa(tarefa: Tarefa) {
-        val intent = Intent(this, DetalheTarefaActivity::class.java)
-        intent.putExtra(EXTRA_TAREFA, tarefa)
-        startActivity(intent)
-        showToast(tarefa.nome)
 
-    }
 
     override fun onSupportNavigateUp(): Boolean {
                 val actionBarToggle = ActionBarDrawerToggle(
@@ -145,6 +143,8 @@ class MainActivity : AppCompatActivity(), CLickItemTarefaListener {
         showToast("Clicou no hamburger!")
         return true
     }
+
+
 
 
 }
