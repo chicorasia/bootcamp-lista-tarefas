@@ -12,31 +12,20 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Light"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/app_name"
-        />
-
-    <ImageView
-        android:id="@+id/detalhe_imagem_iv"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/detalhe_toolbar"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/app_name" />
 
     <TextView
         android:id="@+id/detalhe_nome_txt"
+        style="@style/rotulo_tarefa"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Nome da Tarefa"
-        app:layout_constraintTop_toBottomOf="@id/detalhe_imagem_iv"
+        android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="16dp"
-        style="@style/rotulo_tarefa"/>
+        app:layout_constraintTop_toBottomOf="@+id/detalhe_toolbar"
+        tools:text="Nome da Tarefa" />
 
     <TextView
         android:id="@+id/detalhe_data_txt"

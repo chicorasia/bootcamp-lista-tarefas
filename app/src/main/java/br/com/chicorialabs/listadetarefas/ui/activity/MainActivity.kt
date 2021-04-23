@@ -70,18 +70,23 @@ class MainActivity : AppCompatActivity(), CLickItemTarefaListener {
 
 
     private fun fetchListaTarefas() {
-        val list = arrayListOf(
-            Tarefa(nome = "Compras", data = "17/03/2021"),
-            Tarefa(nome = "Lavar Carro", data = "30/03/2021"),
-            Tarefa(nome = "Consulta Dentista", data = "28/03/2021"),
-            Tarefa(nome = "Cortar grama", data = "18/03/2021", concluida = true),
-            Tarefa (nome = "Estudar Kotlin", data = "24/03/2021")
-        )
 
-        getInstanceSharedPreferences().edit {
-            putString("tarefas", Gson().toJson(list))
-            commit()
+        //vai gravar uma lista fake se não tiver nada gravado nas SharedPreferences
+        if (getListTarefa().isEmpty()) {
+            val list = arrayListOf(
+                Tarefa(nome = "Compras", data = "17/03/2021"),
+                Tarefa(nome = "Lavar Carro", data = "30/03/2021"),
+                Tarefa(nome = "Consulta Dentista", data = "28/03/2021"),
+                Tarefa(nome = "Cortar grama", data = "18/03/2021", concluida = true),
+                Tarefa (nome = "Estudar Kotlin", data = "24/03/2021", true)
+            )
+
+            getInstanceSharedPreferences().edit {
+                putString("tarefas", Gson().toJson(list))
+                commit()
+            }
         }
+
     }
 
     private fun getListTarefa(): List<Tarefa> {

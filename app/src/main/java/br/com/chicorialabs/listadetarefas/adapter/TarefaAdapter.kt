@@ -18,7 +18,7 @@ class TarefaAdapter(val listener: CLickItemTarefaListener) :
             LayoutInflater.from(parent.context),
             parent, false
         )
-        return TarefaAdapterViewHolder(binding, listener=listener, lista=lista)
+        return TarefaAdapterViewHolder(binding, listener = listener, lista=lista)
     }
 
     override fun onBindViewHolder(holder: TarefaAdapterViewHolder, position: Int) {
