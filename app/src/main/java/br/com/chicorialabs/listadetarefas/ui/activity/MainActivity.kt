@@ -3,7 +3,6 @@ package br.com.chicorialabs.listadetarefas.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -11,10 +10,12 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.chicorialabs.listadetarefas.R
+import br.com.chicorialabs.listadetarefas.adapter.ClickItemTarefaListener
 import br.com.chicorialabs.listadetarefas.adapter.TarefaAdapter
 import br.com.chicorialabs.listadetarefas.databinding.DrawerMenuBinding
 import br.com.chicorialabs.listadetarefas.model.Tarefa
@@ -22,19 +23,17 @@ import br.com.chicorialabs.listadetarefas.ui.activity.DetalheTarefaActivity.Comp
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-// TODO 005: A MainActivity implementa a interface ClickItemTarefaListener
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ClickItemTarefaListener {
 
 
     private lateinit var binding: DrawerMenuBinding
 
-//    TODO 006: passar a MainActivity como parâmetro do construtor do adapter
-    private val adapter = TarefaAdapter()
+    private val adapter = TarefaAdapter(this)
     private val rvList: RecyclerView by lazy {
         binding.drawerInclude.mainRecyclerview
     }
 
-//    TODO 007: sobrescrever os métodos da interface ClickItemTarefaListener
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -144,7 +143,22 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onItemClickListener(tarefa: Tarefa) {
+        val intent = Intent(this, DetalheTarefaActivity::class.java)
+        intent.putExtra(EXTRA_TAREFA, tarefa)
+        startActivity(intent)
+    }
 
+    override fun onItemLongClickListener(tarefa: Tarefa) {
+        val listaAtualizada = mutableListOf<Tarefa>()
+        listaAtualizada.addAll(getListTarefa())
+        listaAtualizada.remove(tarefa)
+        getInstanceSharedPreferences().edit {
+            putString("tarefas", Gson().toJson(listaAtualizada))
+            commit()
+        }
+        updateList()
+    }
 
 
 }

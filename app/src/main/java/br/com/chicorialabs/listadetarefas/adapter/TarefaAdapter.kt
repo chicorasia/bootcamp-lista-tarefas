@@ -6,12 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.chicorialabs.listadetarefas.databinding.TarefaItemBinding
 import br.com.chicorialabs.listadetarefas.model.Tarefa
 
-//TODO 001: Criar uma interface ClickItemTarefaListener
-//TODO 002: Criar os métodos clickItemTarefa e longClickItemTarefa na interface (sem corpo)
-
-
-
-class TarefaAdapter() :
+class TarefaAdapter(val listener: ClickItemTarefaListener) :
     RecyclerView.Adapter<TarefaAdapter.TarefaAdapterViewHolder>() {
 
     private lateinit var binding: TarefaItemBinding
@@ -23,8 +18,7 @@ class TarefaAdapter() :
             parent, false
         )
 
-        //TODO 003: passar essa interface como parâmetro do TarefaAdapter
-        return TarefaAdapterViewHolder(binding, lista=lista)
+        return TarefaAdapterViewHolder(binding, listener = listener, lista=lista)
     }
 
     override fun onBindViewHolder(holder: TarefaAdapterViewHolder, position: Int) {
@@ -42,6 +36,7 @@ class TarefaAdapter() :
 
     class TarefaAdapterViewHolder(
         private val binding: TarefaItemBinding,
+        private val listener: ClickItemTarefaListener,
         lista: List<Tarefa>
     ) : RecyclerView.ViewHolder(binding.root) {
 
@@ -51,8 +46,16 @@ class TarefaAdapter() :
             binding.itemConcluidoCbx.isChecked = tarefa.concluida
         }
 
-        //TODO 004: vincular os métodos da interface com o viewholder
 
+      init {
+          binding.root.setOnClickListener {
+              listener.onItemClickListener(lista[adapterPosition])
+          binding.root.setOnLongClickListener {
+              listener.onItemLongClickListener(lista[adapterPosition])
+              true
+          }
+          }
+      }
 
     }
 }
