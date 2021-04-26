@@ -153,8 +153,14 @@ class MainActivity : AppCompatActivity(), ClickItemTarefaListener {
         updateList()
     }
 
-    //    TODO 004: adicionar o corpo do novo memmbro, fazendo uma atualização da tarefa na lista
-
+    override fun onItemCheckedChangeListener(tarefa: Tarefa, isChecked: Boolean, position: Int) {
+        tarefa.concluida = isChecked
+        val listaAtualizada = mutableListOf<Tarefa>()
+        listaAtualizada.addAll(getListTarefa())
+        listaAtualizada[position] = tarefa
+        save(listaAtualizada)
+    }
+    
 
     private fun save(listaAtualizada: MutableList<Tarefa>) {
         getInstanceSharedPreferences().edit {

@@ -55,8 +55,13 @@ class TarefaAdapter(val listener: ClickItemTarefaListener) :
                 listener.onItemLongClickListener(lista[adapterPosition])
                 true
             }
+            binding.itemConcluidoCbx.setOnCheckedChangeListener { buttonView, isChecked ->
+                listener.onItemCheckedChangeListener(
+                    lista[adapterPosition],
+                    isChecked, adapterPosition
+                )
+            }
 
-//            TODO 002: configurar o setOnCheckedChangeListener
 
         }
     }
