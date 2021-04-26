@@ -23,16 +23,16 @@ import br.com.chicorialabs.listadetarefas.ui.activity.DetalheTarefaActivity.Comp
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
+// TODO 003: implementar o novo membro da interface
 class MainActivity : AppCompatActivity(), ClickItemTarefaListener {
 
 
     private lateinit var binding: DrawerMenuBinding
 
-    private val adapter = TarefaAdapter(this)
+    private val adapter = TarefaAdapter(listener = this)
     private val rvList: RecyclerView by lazy {
         binding.drawerInclude.mainRecyclerview
     }
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,13 +81,10 @@ class MainActivity : AppCompatActivity(), ClickItemTarefaListener {
                 Tarefa(nome = "Lavar Carro", data = "30/03/2021"),
                 Tarefa(nome = "Consulta Dentista", data = "28/03/2021"),
                 Tarefa(nome = "Cortar grama", data = "18/03/2021", concluida = true),
-                Tarefa (nome = "Estudar Kotlin", data = "24/03/2021", true)
+                Tarefa(nome = "Estudar Kotlin", data = "24/03/2021", true)
             )
 
-            getInstanceSharedPreferences().edit {
-                putString("tarefas", Gson().toJson(list))
-                commit()
-            }
+            save(list)
         }
 
     }
@@ -131,9 +128,8 @@ class MainActivity : AppCompatActivity(), ClickItemTarefaListener {
     }
 
 
-
     override fun onSupportNavigateUp(): Boolean {
-                val actionBarToggle = ActionBarDrawerToggle(
+        val actionBarToggle = ActionBarDrawerToggle(
             this, binding.root,
             R.string.open_drawer, R.string.close_drawer
         )
@@ -153,11 +149,18 @@ class MainActivity : AppCompatActivity(), ClickItemTarefaListener {
         val listaAtualizada = mutableListOf<Tarefa>()
         listaAtualizada.addAll(getListTarefa())
         listaAtualizada.remove(tarefa)
+        save(listaAtualizada)
+        updateList()
+    }
+
+    //    TODO 004: adicionar o corpo do novo memmbro, fazendo uma atualização da tarefa na lista
+
+
+    private fun save(listaAtualizada: MutableList<Tarefa>) {
         getInstanceSharedPreferences().edit {
             putString("tarefas", Gson().toJson(listaAtualizada))
             commit()
         }
-        updateList()
     }
 
 

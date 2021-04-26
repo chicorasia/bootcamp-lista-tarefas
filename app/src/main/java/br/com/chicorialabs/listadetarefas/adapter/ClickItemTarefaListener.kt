@@ -7,4 +7,7 @@ interface ClickItemTarefaListener {
     fun onItemClickListener(tarefa: Tarefa)
 
     fun onItemLongClickListener(tarefa: Tarefa)
+
+//    TODO 001: Adicionar um método onItemCheckedChangeListener(tarefa, isChecked, position)
+
 }

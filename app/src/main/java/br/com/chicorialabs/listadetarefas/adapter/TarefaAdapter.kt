@@ -18,7 +18,7 @@ class TarefaAdapter(val listener: ClickItemTarefaListener) :
             parent, false
         )
 
-        return TarefaAdapterViewHolder(binding, listener = listener, lista=lista)
+        return TarefaAdapterViewHolder(binding, listener = listener, lista = lista)
     }
 
     override fun onBindViewHolder(holder: TarefaAdapterViewHolder, position: Int) {
@@ -35,7 +35,7 @@ class TarefaAdapter(val listener: ClickItemTarefaListener) :
 
 
     class TarefaAdapterViewHolder(
-        private val binding: TarefaItemBinding,
+        internal val binding: TarefaItemBinding,
         private val listener: ClickItemTarefaListener,
         lista: List<Tarefa>
     ) : RecyclerView.ViewHolder(binding.root) {
@@ -47,15 +47,18 @@ class TarefaAdapter(val listener: ClickItemTarefaListener) :
         }
 
 
-      init {
-          binding.root.setOnClickListener {
-              listener.onItemClickListener(lista[adapterPosition])
-          binding.root.setOnLongClickListener {
-              listener.onItemLongClickListener(lista[adapterPosition])
-              true
-          }
-          }
-      }
+        init {
+            binding.root.setOnClickListener {
+                listener.onItemClickListener(lista[adapterPosition])
+            }
+            binding.root.setOnLongClickListener {
+                listener.onItemLongClickListener(lista[adapterPosition])
+                true
+            }
 
+//            TODO 002: configurar o setOnCheckedChangeListener
+
+        }
     }
+
 }
