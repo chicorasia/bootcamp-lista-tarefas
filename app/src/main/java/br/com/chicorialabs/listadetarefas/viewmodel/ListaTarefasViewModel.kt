@@ -23,10 +23,6 @@ class ListaTarefasViewModel(val preferences: SharedPreferences) : ViewModel() {
         get() = _listaTarefas
 
 
-    //adiciona
-
-    //remove
-
     fun getListTarefa(): ArrayList<Tarefa> {
         val list = preferences.getString("tarefas", "[]")
         val turnsType = object : TypeToken<List<Tarefa>>() {}.type

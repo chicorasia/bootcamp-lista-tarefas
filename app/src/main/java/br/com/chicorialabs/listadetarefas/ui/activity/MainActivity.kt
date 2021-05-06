@@ -11,7 +11,6 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.edit
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.chicorialabs.listadetarefas.R
@@ -20,12 +19,12 @@ import br.com.chicorialabs.listadetarefas.adapter.TarefaAdapter
 import br.com.chicorialabs.listadetarefas.databinding.DrawerMenuBinding
 import br.com.chicorialabs.listadetarefas.model.Tarefa
 import br.com.chicorialabs.listadetarefas.ui.activity.DetalheTarefaActivity.Companion.EXTRA_TAREFA
-import br.com.chicorialabs.listadetarefas.viewmodel.ListaTarefaViewModelFactory
 import br.com.chicorialabs.listadetarefas.viewmodel.ListaTarefasViewModel
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 
-// TODO 003: implementar o novo membro da interface
+// TODO 001: criar um pacote ui.touchhelper
+// TODO 002: criar uma classe abstrata SwipeTouchHelper que extende ItemTouchHelper.SimpleCallback indicando as direções do movimento (dragflags e swipeflags)
+// TODO 003: Sobrescrever os métodos da classe SwipeTouchHelper
+
 class MainActivity : AppCompatActivity(), ClickItemTarefaListener {
 
     private val listaTarefaViewModel by lazy {
@@ -49,6 +48,10 @@ class MainActivity : AppCompatActivity(), ClickItemTarefaListener {
         inicializaToolbar()
         inicializaRecyclerView()
 
+//        TODO 004: Criar um swipeHandler como um SwipeToDeleteCallback via object expression
+
+//        TODO 005: criar um ItemTouchHelper que recebe o swipehandler e vincular ao recyclerview
+
 
     }
 
@@ -70,12 +73,11 @@ class MainActivity : AppCompatActivity(), ClickItemTarefaListener {
             adapter = TarefaAdapter(it, this)
             rvList.adapter = adapter
             rvList.layoutManager = LinearLayoutManager(this)
-            updateList(it)
         }
     }
 
-    private fun updateList(lista: List<Tarefa>) {
-        adapter.updateList(lista)
+    private fun updateList() {
+        adapter.updateList()
     }
 
     fun getListTarefa() = listaTarefaViewModel.getListTarefa()
@@ -132,14 +134,12 @@ class MainActivity : AppCompatActivity(), ClickItemTarefaListener {
 
     override fun onItemLongClickListener(tarefa: Tarefa) {
         listaTarefaViewModel.remove(tarefa)
-//        listaTarefaViewModel.save()
-        updateList(getListTarefa())
+        updateList()
     }
 
     override fun onItemCheckedChangeListener(tarefa: Tarefa, isChecked: Boolean, position: Int) {
         listaTarefaViewModel.atualiza(tarefa, isChecked, position)
-//        adapter.notifyItemChanged(position)
-//        updateList()
+
     }
     
 

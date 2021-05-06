@@ -26,12 +26,11 @@ class TarefaAdapter(private val lista: MutableList<Tarefa>, private val listener
 
     override fun getItemCount(): Int = this.lista.size
 
-    fun updateList(listaRecebida: List<Tarefa>) {
-//        this.lista.clear()
-//        this.lista.addAll(listaRecebida)
+    fun updateList() {
         notifyDataSetChanged()
     }
 
+//    TODO 005: Implementar o método removeAt()
 
     class TarefaAdapterViewHolder(
         internal val binding: TarefaItemBinding,
