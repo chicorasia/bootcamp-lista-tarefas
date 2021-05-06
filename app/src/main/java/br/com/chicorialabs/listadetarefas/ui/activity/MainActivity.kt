@@ -20,16 +20,21 @@ import br.com.chicorialabs.listadetarefas.adapter.TarefaAdapter
 import br.com.chicorialabs.listadetarefas.databinding.DrawerMenuBinding
 import br.com.chicorialabs.listadetarefas.model.Tarefa
 import br.com.chicorialabs.listadetarefas.ui.activity.DetalheTarefaActivity.Companion.EXTRA_TAREFA
+import br.com.chicorialabs.listadetarefas.viewmodel.ListaTarefaViewModelFactory
+import br.com.chicorialabs.listadetarefas.viewmodel.ListaTarefasViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 // TODO 003: implementar o novo membro da interface
 class MainActivity : AppCompatActivity(), ClickItemTarefaListener {
 
-
+    private val listaTarefaViewModel by lazy {
+        ListaTarefasViewModel(getInstanceSharedPreferences())
+    }
     private lateinit var binding: DrawerMenuBinding
 
-    private val adapter = TarefaAdapter(listener = this)
+    private lateinit var adapter: TarefaAdapter
+
     private val rvList: RecyclerView by lazy {
         binding.drawerInclude.mainRecyclerview
     }
@@ -42,7 +47,6 @@ class MainActivity : AppCompatActivity(), ClickItemTarefaListener {
         setContentView(view)
 
         inicializaToolbar()
-        fetchListaTarefas()
         inicializaRecyclerView()
 
 
@@ -62,38 +66,19 @@ class MainActivity : AppCompatActivity(), ClickItemTarefaListener {
     }
 
     private fun inicializaRecyclerView() {
-        rvList.adapter = adapter
-        rvList.layoutManager = LinearLayoutManager(this)
-        updateList()
-    }
-
-    private fun updateList() {
-        adapter.updateList(getListTarefa())
-    }
-
-
-    private fun fetchListaTarefas() {
-
-        //vai gravar uma lista fake se não tiver nada gravado nas SharedPreferences
-        if (getListTarefa().isEmpty()) {
-            val list = arrayListOf(
-                Tarefa(nome = "Compras", data = "17/03/2021"),
-                Tarefa(nome = "Lavar Carro", data = "30/03/2021"),
-                Tarefa(nome = "Consulta Dentista", data = "28/03/2021"),
-                Tarefa(nome = "Cortar grama", data = "18/03/2021", concluida = true),
-                Tarefa(nome = "Estudar Kotlin", data = "24/03/2021", true)
-            )
-
-            save(list)
+        listaTarefaViewModel.listaTarefas.observe(this) {
+            adapter = TarefaAdapter(it, this)
+            rvList.adapter = adapter
+            rvList.layoutManager = LinearLayoutManager(this)
+            updateList(it)
         }
-
     }
 
-    private fun getListTarefa(): List<Tarefa> {
-        val list = getInstanceSharedPreferences().getString("tarefas", "[]")
-        val turnsType = object : TypeToken<List<Tarefa>>() {}.type
-        return Gson().fromJson(list, turnsType)
+    private fun updateList(lista: List<Tarefa>) {
+        adapter.updateList(lista)
     }
+
+    fun getListTarefa() = listaTarefaViewModel.getListTarefa()
 
     private fun getInstanceSharedPreferences(): SharedPreferences =
         getSharedPreferences(
@@ -146,28 +131,19 @@ class MainActivity : AppCompatActivity(), ClickItemTarefaListener {
     }
 
     override fun onItemLongClickListener(tarefa: Tarefa) {
-        val listaAtualizada = mutableListOf<Tarefa>()
-        listaAtualizada.addAll(getListTarefa())
-        listaAtualizada.remove(tarefa)
-        save(listaAtualizada)
-        updateList()
+        listaTarefaViewModel.remove(tarefa)
+//        listaTarefaViewModel.save()
+        updateList(getListTarefa())
     }
 
     override fun onItemCheckedChangeListener(tarefa: Tarefa, isChecked: Boolean, position: Int) {
-        tarefa.concluida = isChecked
-        val listaAtualizada = mutableListOf<Tarefa>()
-        listaAtualizada.addAll(getListTarefa())
-        listaAtualizada[position] = tarefa
-        save(listaAtualizada)
+        listaTarefaViewModel.atualiza(tarefa, isChecked, position)
+//        adapter.notifyItemChanged(position)
+//        updateList()
     }
     
 
-    private fun save(listaAtualizada: MutableList<Tarefa>) {
-        getInstanceSharedPreferences().edit {
-            putString("tarefas", Gson().toJson(listaAtualizada))
-            commit()
-        }
-    }
+
 
 
 }

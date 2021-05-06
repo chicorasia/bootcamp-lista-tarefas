@@ -6,11 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.chicorialabs.listadetarefas.databinding.TarefaItemBinding
 import br.com.chicorialabs.listadetarefas.model.Tarefa
 
-class TarefaAdapter(val listener: ClickItemTarefaListener) :
+class TarefaAdapter(private val lista: MutableList<Tarefa>, private val listener: ClickItemTarefaListener) :
     RecyclerView.Adapter<TarefaAdapter.TarefaAdapterViewHolder>() {
 
     private lateinit var binding: TarefaItemBinding
-    val lista: MutableList<Tarefa> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TarefaAdapterViewHolder {
         binding = TarefaItemBinding.inflate(
@@ -18,18 +17,18 @@ class TarefaAdapter(val listener: ClickItemTarefaListener) :
             parent, false
         )
 
-        return TarefaAdapterViewHolder(binding, listener = listener, lista = lista)
+        return TarefaAdapterViewHolder(binding, listener = listener, lista = this.lista)
     }
 
     override fun onBindViewHolder(holder: TarefaAdapterViewHolder, position: Int) {
-        holder.bind(lista[position])
+        holder.bind(this.lista[position])
     }
 
-    override fun getItemCount(): Int = lista.size
+    override fun getItemCount(): Int = this.lista.size
 
     fun updateList(listaRecebida: List<Tarefa>) {
-        this.lista.clear()
-        this.lista.addAll(listaRecebida)
+//        this.lista.clear()
+//        this.lista.addAll(listaRecebida)
         notifyDataSetChanged()
     }
 
@@ -37,7 +36,7 @@ class TarefaAdapter(val listener: ClickItemTarefaListener) :
     class TarefaAdapterViewHolder(
         internal val binding: TarefaItemBinding,
         private val listener: ClickItemTarefaListener,
-        lista: List<Tarefa>
+        val lista: List<Tarefa>
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(tarefa: Tarefa) {
