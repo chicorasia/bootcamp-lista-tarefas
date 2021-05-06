@@ -21,10 +21,6 @@ import br.com.chicorialabs.listadetarefas.model.Tarefa
 import br.com.chicorialabs.listadetarefas.ui.activity.DetalheTarefaActivity.Companion.EXTRA_TAREFA
 import br.com.chicorialabs.listadetarefas.viewmodel.ListaTarefasViewModel
 
-// TODO 001: criar um pacote ui.touchhelper
-// TODO 002: criar uma classe abstrata SwipeTouchHelper que extende ItemTouchHelper.SimpleCallback indicando as direções do movimento (dragflags e swipeflags)
-// TODO 003: Sobrescrever os métodos da classe SwipeTouchHelper
-
 class MainActivity : AppCompatActivity(), ClickItemTarefaListener {
 
     private val listaTarefaViewModel by lazy {
@@ -48,9 +44,9 @@ class MainActivity : AppCompatActivity(), ClickItemTarefaListener {
         inicializaToolbar()
         inicializaRecyclerView()
 
-//        TODO 004: Criar um swipeHandler como um SwipeToDeleteCallback via object expression
+//        TODO 001: Criar um swipeHandler como um ItemTouchHelper.SimpleCallback via object expression
 
-//        TODO 005: criar um ItemTouchHelper que recebe o swipehandler e vincular ao recyclerview
+//        TODO 003: criar um ItemTouchHelper que recebe o swipehandler e vincular ao recyclerview
 
 
     }

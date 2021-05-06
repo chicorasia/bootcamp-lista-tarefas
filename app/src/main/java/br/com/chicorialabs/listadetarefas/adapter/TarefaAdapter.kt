@@ -30,7 +30,7 @@ class TarefaAdapter(private val lista: MutableList<Tarefa>, private val listener
         notifyDataSetChanged()
     }
 
-//    TODO 005: Implementar o método removeAt()
+//    TODO 002: Implementar o método removeAt()
 
     class TarefaAdapterViewHolder(
         internal val binding: TarefaItemBinding,
