@@ -5,7 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.com.chicorialabs.listadetarefas.databinding.TarefaItemBinding
 import br.com.chicorialabs.listadetarefas.model.Tarefa
+import java.util.*
+import kotlin.collections.ArrayList
 
+//TODO 004: Implementar o método swap a partir de Collections
 class TarefaAdapter(private val lista: MutableList<Tarefa>, private val listener: ClickItemTarefaListener) :
     RecyclerView.Adapter<TarefaAdapter.TarefaAdapterViewHolder>() {
 
