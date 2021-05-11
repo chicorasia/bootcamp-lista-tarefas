@@ -47,8 +47,6 @@ class MainActivity : AppCompatActivity(), ClickItemTarefaListener {
         inicializaTouchHelper()
 
     }
-
-//      TODO 002: adicionar dragDirs UP e DOWN
     private fun inicializaTouchHelper() {
         val swipeHandler = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
@@ -59,8 +57,11 @@ class MainActivity : AppCompatActivity(), ClickItemTarefaListener {
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
             ): Boolean {
-//                TODO 003: implementar o método onMove com retorno true
-                return false
+                val origem = viewHolder.adapterPosition
+                val destino = target.adapterPosition
+                adapter.swap(origem, destino)
+                listaTarefaViewModel.save()
+                return true
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -151,10 +152,9 @@ class MainActivity : AppCompatActivity(), ClickItemTarefaListener {
         startActivity(intent)
     }
 
-//    TODO 001: Comentar esse método para evitar conflitos
     override fun onItemLongClickListener(tarefa: Tarefa) {
-        listaTarefaViewModel.remove(tarefa)
-        updateList()
+//        listaTarefaViewModel.remove(tarefa)
+//        updateList()
     }
 
     override fun onItemCheckedChangeListener(tarefa: Tarefa, isChecked: Boolean, position: Int) {

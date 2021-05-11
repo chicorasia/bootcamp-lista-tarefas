@@ -8,7 +8,6 @@ import br.com.chicorialabs.listadetarefas.model.Tarefa
 import java.util.*
 import kotlin.collections.ArrayList
 
-//TODO 004: Implementar o método swap a partir de Collections
 class TarefaAdapter(private val lista: MutableList<Tarefa>, private val listener: ClickItemTarefaListener) :
     RecyclerView.Adapter<TarefaAdapter.TarefaAdapterViewHolder>() {
 
@@ -36,6 +35,11 @@ class TarefaAdapter(private val lista: MutableList<Tarefa>, private val listener
     fun removeAt(position: Int) {
         lista.removeAt(position)
         notifyItemRemoved(position)
+    }
+
+    fun swap(origem: Int, destino: Int) {
+        Collections.swap(lista, origem, destino)
+        notifyItemMoved(origem, destino)
     }
 
 
